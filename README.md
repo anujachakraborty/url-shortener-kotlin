@@ -70,7 +70,7 @@ Content-Type: application/json
 ```bash
   GET /api/abc123
 ```
-    - Response:
+  - Response:
     
 ```bash
 {
