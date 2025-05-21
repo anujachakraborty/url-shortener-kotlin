@@ -1,9 +1,13 @@
 package com.example.urlShortener.controller
 
+import com.example.urlShortener.dto.UrlRequest
+import com.example.urlShortener.model.UrlMapping
 import com.example.urlShortener.service.UrlService
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -13,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api")
+@Validated
 class UrlController(@Autowired val urlService: UrlService) {
 
     @PostMapping("/shorten")
-    fun shortenUrl(@RequestBody body: Map<String, String>): ResponseEntity<String> {
-        val url = body["url"] ?: return ResponseEntity.badRequest().body("Missing URL")
-        val hash = urlService.shortenUrl(url)
+    fun shortenUrl(@Valid @RequestBody urlRequest: UrlRequest): ResponseEntity<String> {
+        //val url = body["url"] ?: return ResponseEntity.badRequest().body("Missing URL")
+        val hash = urlService.shortenUrl(urlRequest.url)
         return ResponseEntity.ok("https://short.ly/$hash")
     }
 
